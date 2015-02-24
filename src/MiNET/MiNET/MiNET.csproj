@@ -187,13 +187,7 @@
     <Compile Include="Utils\NibbleArray.cs" />
     <Compile Include="Utils\PlayerLocation.cs" />
     <Compile Include="Utils\Records.cs" />
-    <Compile Include="Worlds\BiomeSystem\Biome.cs" />
-    <Compile Include="Worlds\BiomeSystem\BiomeFinder.cs" />
-    <Compile Include="Worlds\BiomeSystem\DesertBiome.cs" />
-    <Compile Include="Worlds\BiomeSystem\PlainsBiome.cs" />
-    <Compile Include="Worlds\BiomeSystem\ExtremeBiome.cs" />
     <Compile Include="Worlds\ChunkColumn.cs" />
-    <Compile Include="Worlds\BiomeCoolWorldProvider.cs" />
     <Compile Include="Worlds\CoolWorldProvider.cs" />
     <Compile Include="Worlds\CraftNetAnvilWorldProvider.cs" />
     <Compile Include="Worlds\EntityManager.cs" />
