@@ -5,10 +5,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using log4net;
 using MiNET.Entities;
 using MiNET.Items;
 using MiNET.Net;
+using MiNET.PluginSystem;
+using MiNET.PluginSystem.Attributes;
 using MiNET.Utils;
 using MiNET.Worlds;
 
@@ -355,6 +358,37 @@ namespace MiNET
 			IsConnected = false;
 			IsSpawned = true;
 			Level.RemovePlayer(this);
+			PluginPlayerDisconnectHandler();
+		}
+
+		private void PluginPlayerDisconnectHandler()
+		{
+			try
+			{
+				Player target = this;
+				foreach (var handler in PluginLoader.PlayerDisconnectDictionary)
+				{
+					HandlePlayerDisconnectAttribute atrib = (HandlePlayerDisconnectAttribute)handler.Key;
+					if (atrib == null) continue;
+					var method = handler.Value;
+					if (method == null) return;
+					if (method.IsStatic)
+					{
+						new Task(() => method.Invoke(null, new object[] { target })).Start();
+					}
+					else
+					{
+						object obj = Activator.CreateInstance(method.DeclaringType);
+						new Task(() => method.Invoke(obj, new object[] { target })).Start();
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				//For now we will just ignore this, not to big of a deal.
+				//Will have to think a bit more about this later on.
+				Log.Warn("Plugin Error: " + ex);
+			}
 		}
 
 		/// <summary>
@@ -417,6 +451,38 @@ namespace MiNET
 			SendPackage(new McpeSetDifficulty {difficulty = (int) Level.Difficulty});
 			SendChunksForKnownPosition();
 			LastUpdatedTime = DateTime.UtcNow;
+
+			new Task(PluginPlayerLoginHandler).Start();
+		}
+
+		private void PluginPlayerLoginHandler()
+		{
+			try
+			{
+				Player target = this;
+				foreach (var handler in PluginLoader.PlayerLoginDictionary)
+				{
+					HandlePlayerLoginAttribute atrib = (HandlePlayerLoginAttribute)handler.Key;
+					if (atrib == null) continue;
+					var method = handler.Value;
+					if (method == null) return;
+					if (method.IsStatic)
+					{
+						new Task(() => method.Invoke(null, new object[] { target })).Start();
+					}
+					else
+					{
+						object obj = Activator.CreateInstance(method.DeclaringType);
+						new Task(() => method.Invoke(obj, new object[] { target })).Start();
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				//For now we will just ignore this, not to big of a deal.
+				//Will have to think a bit more about this later on.
+				Log.Warn("Plugin Error: " + ex);
+			}
 		}
 
 		/// <summary>

@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3D012485-ED3D-42C3-867D-45DCE057ADE7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MiNETPC</RootNamespace>
+    <AssemblyName>MiNETPC</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MiNET">
+      <HintPath>..\..\..\..\GitHub\MiNET\src\MiNET\MiNET.Service\bin\Debug\MiNET.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Classes\ClientWrapper.cs" />
+    <Compile Include="Classes\MSGBuffer.cs" />
+    <Compile Include="Classes\PCChunkColumn.cs" />
+    <Compile Include="Classes\Player.cs" />
+    <Compile Include="FakePlayerEntity.cs" />
+    <Compile Include="Packages\EntityEquipment.cs" />
+    <Compile Include="Packages\EntityRelativeMove.cs" />
+    <Compile Include="Packages\HeldItemChange.cs" />
+    <Compile Include="Packages\SpawnPlayer.cs" />
+    <Compile Include="Classes\Vector2.cs" />
+    <Compile Include="ConsoleFunctions.cs" />
+    <Compile Include="Networking\BasicListener.cs" />
+    <Compile Include="Packages\BlockChange.cs" />
+    <Compile Include="Packages\ChatMessage.cs" />
+    <Compile Include="Packages\ChunkData.cs" />
+    <Compile Include="Packages\Disconnect.cs" />
+    <Compile Include="Packages\EntityTeleport.cs" />
+    <Compile Include="Packages\Handshake.cs" />
+    <Compile Include="Packages\JoinGame.cs" />
+    <Compile Include="Packages\KeepAlive.cs" />
+    <Compile Include="Packages\LoginSucces.cs" />
+    <Compile Include="Packages\OnGround.cs" />
+    <Compile Include="Packages\Package.cs" />
+    <Compile Include="Packages\PackageFactory.cs" />
+    <Compile Include="Packages\Ping.cs" />
+    <Compile Include="Packages\PlayerBlockPlacement.cs" />
+    <Compile Include="Packages\PlayerDigging.cs" />
+    <Compile Include="Packages\PlayerListItem.cs" />
+    <Compile Include="Packages\PlayerLook.cs" />
+    <Compile Include="Packages\PlayerPosition.cs" />
+    <Compile Include="Packages\PlayerPositionAndLook.cs" />
+    <Compile Include="Packages\SetCompression.cs" />
+    <Compile Include="Packages\SpawnPosition.cs" />
+    <Compile Include="Packages\TimeUpdate.cs" />
+    <Compile Include="PEPacketReader.cs" />
+    <Compile Include="PluginGlobals.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -113,6 +113,9 @@ namespace MiNET.Worlds
 					case "cool":
 						_worldProvider = new CoolWorldProvider();
 						break;
+					case "biomes":
+						_worldProvider = new BiomeCoolWorldProvider();
+						break;
 					case "experimental":
 						_worldProvider = new ExperimentalWorldProvider();
 						break;
@@ -162,7 +165,7 @@ namespace MiNET.Worlds
 					return player;
 				}
 			}
-			throw new Exception("Player not found!");
+			return null;
 		}
 
 		public void AddPlayer(Player newPlayer)

@@ -15,7 +15,9 @@ namespace MiNET.PluginSystem
 		private static readonly ILog Log = LogManager.GetLogger(typeof(MiNetServer));
 		private List<IMiNETPlugin> Plugins = new List<IMiNETPlugin>();
 		public static Dictionary<Attribute, MethodInfo> PacketHandlerDictionary = new Dictionary<Attribute, MethodInfo>();
-		public static Dictionary<Attribute, MethodInfo> PacketSendHandlerDictionary = new Dictionary<Attribute, MethodInfo>(); 
+		public static Dictionary<Attribute, MethodInfo> PacketSendHandlerDictionary = new Dictionary<Attribute, MethodInfo>();
+		public static Dictionary<Attribute, MethodInfo> PlayerLoginDictionary = new Dictionary<Attribute, MethodInfo>();
+		public static Dictionary<Attribute, MethodInfo> PlayerDisconnectDictionary = new Dictionary<Attribute, MethodInfo>(); 
 		public void LoadPlugins()
 		{
 				if (!Directory.Exists("Plugins"))
@@ -32,6 +34,9 @@ namespace MiNET.PluginSystem
 						{
 							new Task(() => GetCommandHandlers(type)).Start();
 							new Task(() => GetPacketEvents(type)).Start();
+							new Task(() => GetPlayerLoginHandlers(type)).Start();
+							new Task(() => GetPlayerDisconnectHandlers(type)).Start();
+
 							if (!type.IsDefined(typeof (PluginAttribute), true)) continue;
 							var ctor = type.GetConstructor(new Type[] {});
 							if (ctor != null)
@@ -46,6 +51,33 @@ namespace MiNET.PluginSystem
 						}
 					}
 				}
+		}
+
+
+		private void GetPlayerLoginHandlers(Type type)
+		{
+			var methods = type.GetMethods();
+			foreach (MethodInfo method in methods)
+			{
+				var cmd = Attribute.GetCustomAttribute(method,
+					typeof(HandlePlayerLoginAttribute), false) as HandlePlayerLoginAttribute;
+				if (cmd == null)
+					continue;
+				PlayerLoginDictionary.Add(cmd, method);
+			}
+		}
+
+		private void GetPlayerDisconnectHandlers(Type type)
+		{
+			var methods = type.GetMethods();
+			foreach (MethodInfo method in methods)
+			{
+				var cmd = Attribute.GetCustomAttribute(method,
+					typeof(HandlePlayerDisconnectAttribute), false) as HandlePlayerDisconnectAttribute;
+				if (cmd == null)
+					continue;
+				PlayerDisconnectDictionary.Add(cmd, method);
+			}
 		}
 
 		private void GetCommandHandlers(Type type)

@@ -119,7 +119,9 @@
     <Compile Include="PluginSystem\AbstractPlugin.cs" />
     <Compile Include="PluginSystem\Attributes\CommandAttribute.cs" />
     <Compile Include="PluginSystem\Attributes\HandlePacketAttribute.cs" />
+    <Compile Include="PluginSystem\Attributes\HandlePlayerDisconnectAttribute.cs" />
     <Compile Include="PluginSystem\Attributes\HandleSendPacketAttribute.cs" />
+    <Compile Include="PluginSystem\Attributes\HandlePlayerLoginAttribute.cs" />
     <Compile Include="PluginSystem\Attributes\PluginAttribute.cs" />
     <Compile Include="PluginSystem\IMiNETPlugin.cs" />
     <Compile Include="Blocks\Block.cs" />
@@ -185,7 +187,13 @@
     <Compile Include="Utils\NibbleArray.cs" />
     <Compile Include="Utils\PlayerLocation.cs" />
     <Compile Include="Utils\Records.cs" />
+    <Compile Include="Worlds\BiomeSystem\Biome.cs" />
+    <Compile Include="Worlds\BiomeSystem\BiomeFinder.cs" />
+    <Compile Include="Worlds\BiomeSystem\DesertBiome.cs" />
+    <Compile Include="Worlds\BiomeSystem\PlainsBiome.cs" />
+    <Compile Include="Worlds\BiomeSystem\ExtremeBiome.cs" />
     <Compile Include="Worlds\ChunkColumn.cs" />
+    <Compile Include="Worlds\BiomeCoolWorldProvider.cs" />
     <Compile Include="Worlds\CoolWorldProvider.cs" />
     <Compile Include="Worlds\CraftNetAnvilWorldProvider.cs" />
     <Compile Include="Worlds\EntityManager.cs" />
@@ -193,6 +201,7 @@
     <Compile Include="Worlds\FlatlandWorldProvider.cs" />
     <Compile Include="Worlds\IWorldProvider.cs" />
     <Compile Include="Worlds\Level.cs" />
+    <Compile Include="Worlds\Structures\Cactus.cs" />
     <Compile Include="Worlds\Structures\OakTree.cs" />
     <Compile Include="Worlds\Structures\StructureClass.cs" />
     <Content Include="Net\MCPE Protocol.xml">
