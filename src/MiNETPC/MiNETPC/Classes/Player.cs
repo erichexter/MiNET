@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 using MiNET.Net;
 using MiNET.Utils;
@@ -115,7 +116,7 @@ namespace MiNETPC.Classes
 									Action = 0,
 									Username = player2.Username,
 									Gamemode = player2.Gamemode,
-									UUID = Uuid
+									UUID = player2.Uuid
 								}.Write();
 
 								if (player2 != this)

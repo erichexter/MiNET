@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using MiNET.Net;
 using MiNET.PluginSystem.Attributes;
 using MiNET.Utils;
@@ -39,12 +40,18 @@ namespace MiNETPC
 		[HandlePacket(typeof (McpeMovePlayer))]
 		public void HandleMovePacket(Package packet, Player source)
 		{
-			
 			McpeMovePlayer data = (McpeMovePlayer) packet;
+			var prev = PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Coordinates;
+			PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Coordinates = new Vector3(data.x, data.y, data.z);
+			PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Yaw = data.bodyYaw;
+			PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Pitch = data.pitch;
+
+			var change = prev - PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Coordinates;
 
 			foreach (var player in PluginGlobals.PcPlayers)
 			{
-				new EntityTeleport(player.Wrapper, new MSGBuffer(player.Wrapper)) {Coordinates = new Vector3(data.x, data.y, data.z), OnGround = false, Yaw = (byte)data.yaw, Pitch = (byte)data.pitch, UniqueServerID = PluginGlobals.PeidOffset + data.entityId}.Write();
+				//new EntityRelativeMove(player.Wrapper){Player = splayer, Movement = newl}.Write();
+				new EntityTeleport(player.Wrapper, new MSGBuffer(player.Wrapper)) {Coordinates = new Vector3(data.x, data.y, data.z), OnGround = false, Yaw = (byte)data.bodyYaw, Pitch = (byte)data.pitch, UniqueServerID = PluginGlobals.PeidOffset + data.entityId}.Write();
 			}
 		}
 
@@ -62,7 +69,7 @@ namespace MiNETPC
 					break;
 				}
 			}
-			PluginGlobals.BroadcastChat("\\u00A7e" + player.Username + " has left the game...");
+			PluginGlobals.BroadcastChat("\\u00A7e" + player.Username + " has left the game!");
 		}
 
 		[HandlePlayerLogin]

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using MiNET.Utils;
@@ -54,7 +55,7 @@ namespace MiNETPC
 			foreach (var player in PcPlayers)
 			{
 				//new BlockChange(player.Wrapper, new MSGBuffer(player.Wrapper)) {BlockID = data.block, MetaData = data.meta, Location = new Vector3(data.x, data.y, data.z)}.Write();
-				new ChunkData(player.Wrapper) { Chunk = converted }.Write();
+				new ChunkData(player.Wrapper) { Chunk = converted, Quee = false}.Write();
 			}
 		}
 
@@ -159,17 +160,14 @@ namespace MiNETPC
 		public static List<Player> GetPlayers()
 		{
 			List<Player> templist = new List<Player>();
-				/*foreach (var player in pePlayers)
-				{
-					Player p = new Player();
-					p.Username = player.Username;
-					p.EntityID = PEIDOffset + player.EntityId;
-					p.Wrapper = new ClientWrapper(player.EndPoint);
-					templist.Add(p);
-				}*/
 			templist.AddRange(PePlayers);
 			templist.AddRange(PcPlayers);
 			return templist;
+		}
+
+		public static Player GetPlayer(int entityId)
+		{
+			return GetPlayers().FirstOrDefault(i => i.EntityId == entityId);
 		}
 
 		public static void BroadcastChat(string message)
