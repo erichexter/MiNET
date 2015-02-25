@@ -71,7 +71,7 @@ namespace MiNETPC.Classes
 					pcchunk.Pe2Pc(chunk);
 					
 
-					new ChunkData(Wrapper, new MSGBuffer(Wrapper)) {Chunk = pcchunk}.Write();
+					new ChunkData(Wrapper, new MsgBuffer(Wrapper)) {Chunk = pcchunk}.Write();
 					//new ChunkData().Write(Wrapper, new MSGBuffer(Wrapper), new object[]{ chunk.GetBytes() });
 
 					Thread.Yield();

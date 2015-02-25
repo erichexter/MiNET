@@ -59,6 +59,19 @@ namespace MiNETPC
 			}
 		}
 
+		public static void SendBlockUpdate(Vector3 position, short blockId, byte metadata)
+		{
+			//ChunkColumn targetchunk = Level._worldProvider.GenerateChunkColumn(position);
+			//PcChunkColumn converted = new PcChunkColumn { X = position.X, Z = position.Z };
+			//converted.Pe2Pc(targetchunk);
+
+			foreach (var player in PcPlayers)
+			{
+				new BlockChange(player.Wrapper, new MsgBuffer(player.Wrapper)) {BlockId = blockId, MetaData = metadata, Location = position}.Write();
+				//new ChunkData(player.Wrapper) { Chunk = converted, Quee = false }.Write();
+			}
+		}
+
 		public static void Initialize()
 		{
 			_ignore = new List<int>

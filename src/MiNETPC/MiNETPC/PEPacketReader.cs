@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using MiNET.Net;
 using MiNET.PluginSystem.Attributes;
 using MiNET.Utils;
@@ -17,6 +16,8 @@ namespace MiNETPC
 		public void HandleChatPacket(Package packet, Player source)
 		{
 			McpeMessage data = (McpeMessage) packet;
+			if (data.message.StartsWith("/")) return; //Do not show commands in chat!!!
+
 			PluginGlobals.BroadcastChat("<" + source.Username + "> " + data.message.Replace("\\", "\\\\").Replace("\"", "\'\'"));
 		}
 
@@ -30,28 +31,25 @@ namespace MiNETPC
 
 			converted.Pe2Pc(targetchunk);
 
-			foreach (var player in PluginGlobals.PcPlayers)
-			{
+			//foreach (var player in PluginGlobals.PcPlayers)
+			//{
 				//new BlockChange(player.Wrapper, new MSGBuffer(player.Wrapper)) {BlockID = data.block, MetaData = data.meta, Location = new Vector3(data.x, data.y, data.z)}.Write();
-				new ChunkData(player.Wrapper){ Chunk = converted, Quee = false}.Write();
-			}
+				//new ChunkData(player.Wrapper){ Chunk = converted, Quee = false}.Write();
+			//}
+			PluginGlobals.SendBlockUpdate(new Vector3(data.x, data.y, data.z), PluginGlobals.GetBlockId(data.block), data.meta);
 		}
 
 		[HandlePacket(typeof (McpeMovePlayer))]
 		public void HandleMovePacket(Package packet, Player source)
 		{
 			McpeMovePlayer data = (McpeMovePlayer) packet;
-			var prev = PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Coordinates;
 			PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Coordinates = new Vector3(data.x, data.y, data.z);
 			PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Yaw = data.bodyYaw;
 			PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Pitch = data.pitch;
 
-			var change = prev - PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Coordinates;
-
 			foreach (var player in PluginGlobals.PcPlayers)
 			{
-				//new EntityRelativeMove(player.Wrapper){Player = splayer, Movement = newl}.Write();
-				new EntityTeleport(player.Wrapper, new MSGBuffer(player.Wrapper)) {Coordinates = new Vector3(data.x, data.y, data.z), OnGround = false, Yaw = (byte)data.bodyYaw, Pitch = (byte)data.pitch, UniqueServerID = PluginGlobals.PeidOffset + data.entityId}.Write();
+				new EntityTeleport(player.Wrapper, new MsgBuffer(player.Wrapper)) {Coordinates = new Vector3(data.x, data.y, data.z), OnGround = false, Yaw = (byte)data.bodyYaw, Pitch = (byte)data.pitch, EntityId = PluginGlobals.PeidOffset + data.entityId}.Write();
 			}
 		}
 

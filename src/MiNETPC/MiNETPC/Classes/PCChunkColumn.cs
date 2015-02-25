@@ -47,7 +47,7 @@ namespace MiNETPC.Classes
 
 		public byte[] GetBytes()
 		{
-			var writer = new MSGBuffer(new byte[]{});
+			var writer = new MsgBuffer(new byte[]{});
 			writer.WriteInt(X);
 			writer.WriteInt(Z);
 			writer.WriteBool(true);

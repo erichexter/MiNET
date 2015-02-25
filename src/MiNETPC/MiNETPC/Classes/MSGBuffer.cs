@@ -1,35 +1,34 @@
 ﻿using System;
-using System.IO;
-using System.Text;
 using System.Collections.Generic;
-using System.Net.Sockets;
+using System.IO;
 using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using MiNET.Utils;
-using MiNETPC.Classes;
 
-namespace MiNETPC
+namespace MiNETPC.Classes
 {
-	public class MSGBuffer
+	public class MsgBuffer
 	{
-		private ClientWrapper _Client;
+		private ClientWrapper _client;
 		public int Size = 0;
 		private int LastByte = 0;
 		public byte[] BufferedData = new byte[4096];
 
-		public MSGBuffer(ClientWrapper client)
+		public MsgBuffer(ClientWrapper client)
 		{
-			_Client = client;
+			_client = client;
 			if (client.TCPClient.Connected) mStream = client.TCPClient.GetStream();
 		}
 
-		public MSGBuffer(NetworkStream stream)
+		public MsgBuffer(NetworkStream stream)
 		{
 			mStream = stream;
 		}
 
-		public MSGBuffer(byte[] Data)
+		public MsgBuffer(byte[] data)
 		{
-			BufferedData = Data;
+			BufferedData = data;
 		}
 
 		#region Reader
@@ -171,15 +170,6 @@ namespace MiNETPC
 			return new Vector3(x, y, z);
 		}
 
-		//public IntVector3 ReadIntPosition()
-		//{
-		//	long val = ReadLong();
-		//	int x = (int)Math.Floor((decimal)(val >> 38));
-		//	int y = (int)Math.Floor((decimal)((val >> 26) & 0xFFF));
-		//	int z = (int)Math.Floor((decimal)(val << 38 >> 38));
-		//	return new IntVector3(x, y, z);
-		//}
-
 		/// <summary>
 		/// Reads the username. (We cannot just use ReadString() because of some weird bug)...
 		/// Idk what happend, but it seems to send an extra byte for the username there...
@@ -266,8 +256,11 @@ namespace MiNETPC
 
 		public void WritePosition(Vector3 position)
 		{
-			long ToSend = (((long)position.X & 0x3FFFFFF) << 38) | (((long)position.Y & 0xFFF) << 26) | ((long)position.Z & 0x3FFFFFF);
-			WriteLong(ToSend);
+			long x = Convert.ToInt64(position.X);
+			long y = Convert.ToInt64(position.Y);
+			long z = Convert.ToInt64(position.Z);
+			var toSend = ((x & 0x3FFFFFF) << 38) | ((y & 0xFFF) << 26) | (z & 0x3FFFFFF);
+			WriteLong(toSend);
 		}
 
 		public void WriteVarInt(int Integer)
@@ -378,7 +371,7 @@ namespace MiNETPC
 				{
 					data.Add(i);
 				}
-				_Client.AddToQuee(data.ToArray(), quee);
+				_client.AddToQuee(data.ToArray(), quee);
 				bffr.Clear();
 			}
 			catch (Exception ex)

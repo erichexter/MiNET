@@ -33,7 +33,7 @@ namespace MiNETPC.Networking
 			{
 				try
 				{
-					MSGBuffer Buf = new MSGBuffer(Client);
+					MsgBuffer Buf = new MsgBuffer(Client);
 					int ReceivedData = clientStream.Read(Buf.BufferedData, 0, Buf.BufferedData.Length);
 					if (ReceivedData > 0)
 					{
