@@ -12,6 +12,20 @@ namespace MiNETPC
 {
 	public class PePacketReader
 	{
+		[HandlePacket(typeof(McpeAnimate))]
+		public void HandleAnimation(Package packet, Player source)
+		{
+			McpeAnimate data = (McpeAnimate) packet;
+			if (data.actionId == 1)
+			{
+				var tar = PluginGlobals.GetPlayer(source.EntityId + PluginGlobals.PeidOffset);
+				foreach (var i in PluginGlobals.PcPlayers)
+				{
+					new Animation(i.Wrapper) { AnimationId = 0, TargetPlayer = tar }.Broadcast(false, tar);	
+				}
+			}
+		}
+
 		[HandlePacket(typeof(McpeMessage))]
 		public void HandleChatPacket(Package packet, Player source)
 		{

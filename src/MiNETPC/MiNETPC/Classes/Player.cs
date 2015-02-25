@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
+using MiNET;
 using MiNET.Net;
 using MiNET.Utils;
 using MiNET.Worlds;
@@ -42,10 +43,13 @@ namespace MiNETPC.Classes
 		public byte CurrentSlot = 0;
 
 		public MiNET.Player PlayerEntity;
+		public PlayerInventory PlayerInventory;
 
 		public Player()
 		{
 			_chunksUsed = new Dictionary<Tuple<int, int>, ChunkColumn>();
+			if (PlayerEntity == null) PlayerEntity = new MiNET.Player(null, null, PluginGlobals.Level, -1);
+			PlayerInventory = new PlayerInventory(this);
 		}
 
 		public void SendChunksForKnownPosition(bool force = false)

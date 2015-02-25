@@ -42,6 +42,9 @@
     <Compile Include="Classes\MSGBuffer.cs" />
     <Compile Include="Classes\PCChunkColumn.cs" />
     <Compile Include="Classes\Player.cs" />
+    <Compile Include="CustomInventory.cs" />
+    <Compile Include="Packages\Animation.cs" />
+    <Compile Include="Packages\CreativeInventoryAction.cs" />
     <Compile Include="Packages\EntityEquipment.cs" />
     <Compile Include="Packages\EntityRelativeMove.cs" />
     <Compile Include="Packages\HeldItemChange.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="Packages\SetCompression.cs" />
     <Compile Include="Packages\SpawnPosition.cs" />
     <Compile Include="Packages\TimeUpdate.cs" />
+    <Compile Include="Packages\UseEntity.cs" />
     <Compile Include="PEPacketReader.cs" />
     <Compile Include="PluginGlobals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
