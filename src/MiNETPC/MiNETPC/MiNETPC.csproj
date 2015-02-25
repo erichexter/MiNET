@@ -15,7 +15,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -35,11 +35,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
@@ -47,7 +42,6 @@
     <Compile Include="Classes\MSGBuffer.cs" />
     <Compile Include="Classes\PCChunkColumn.cs" />
     <Compile Include="Classes\Player.cs" />
-    <Compile Include="FakePlayerEntity.cs" />
     <Compile Include="Packages\EntityEquipment.cs" />
     <Compile Include="Packages\EntityRelativeMove.cs" />
     <Compile Include="Packages\HeldItemChange.cs" />

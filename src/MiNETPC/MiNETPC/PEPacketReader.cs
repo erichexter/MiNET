@@ -10,7 +10,7 @@ using Player = MiNET.Player;
 
 namespace MiNETPC
 {
-	public class PEPacketReader
+	public class PePacketReader
 	{
 		[HandlePacket(typeof(McpeMessage))]
 		public void HandleChatPacket(Package packet, Player source)
@@ -25,11 +25,11 @@ namespace MiNETPC
 			McpeUpdateBlock data = (McpeUpdateBlock) packet;
 			ChunkCoordinates target = new ChunkCoordinates(data.x >> 4, data.z >> 4);
 			ChunkColumn targetchunk = PluginGlobals.Level._worldProvider.GenerateChunkColumn(target);
-			PCChunkColumn converted = new PCChunkColumn { X = target.X, Z = target.Z };
+			PcChunkColumn converted = new PcChunkColumn { X = target.X, Z = target.Z };
 
 			converted.Pe2Pc(targetchunk);
 
-			foreach (var player in PluginGlobals.pcPlayers)
+			foreach (var player in PluginGlobals.PcPlayers)
 			{
 				//new BlockChange(player.Wrapper, new MSGBuffer(player.Wrapper)) {BlockID = data.block, MetaData = data.meta, Location = new Vector3(data.x, data.y, data.z)}.Write();
 				new ChunkData(player.Wrapper){ Chunk = converted, Quee = false}.Write();
@@ -42,22 +42,22 @@ namespace MiNETPC
 			
 			McpeMovePlayer data = (McpeMovePlayer) packet;
 
-			foreach (var player in PluginGlobals.pcPlayers)
+			foreach (var player in PluginGlobals.PcPlayers)
 			{
-				new EntityTeleport(player.Wrapper, new MSGBuffer(player.Wrapper)) {Coordinates = new Vector3(data.x, data.y, data.z), OnGround = false, Yaw = (byte)data.yaw, Pitch = (byte)data.pitch, UniqueServerID = PluginGlobals.PEIDOffset + data.entityId}.Write();
+				new EntityTeleport(player.Wrapper, new MSGBuffer(player.Wrapper)) {Coordinates = new Vector3(data.x, data.y, data.z), OnGround = false, Yaw = (byte)data.yaw, Pitch = (byte)data.pitch, UniqueServerID = PluginGlobals.PeidOffset + data.entityId}.Write();
 			}
 		}
 
 		[HandlePlayerDisconnect]
 		public void HandleDisconnect(Player player)
 		{
-			foreach (var playerd in PluginGlobals.pePlayers)
+			foreach (var playerd in PluginGlobals.PePlayers)
 			{
 				if (playerd.Username == player.Username)
 				{
-					foreach (var playerd2 in PluginGlobals.pcPlayers)
+					foreach (var playerd2 in PluginGlobals.PcPlayers)
 					{
-						new PlayerListItem(playerd2.Wrapper) {Action = 4, Gamemode = GameMode.Creative, Username = playerd.Username, UUID = playerd.UUID}.Write();
+						new PlayerListItem(playerd2.Wrapper) {Action = 4, Gamemode = GameMode.Creative, Username = playerd.Username, UUID = playerd.Uuid}.Write();
 					}
 					break;
 				}
@@ -68,28 +68,30 @@ namespace MiNETPC
 		[HandlePlayerLogin]
 		public void HandleLogin(Player player)
 		{
-			MiNETPC.Classes.Player p = new Classes.Player();
-			p.Username = player.Username;
-			p.UniqueServerID = PluginGlobals.PEIDOffset + player.EntityId ;
-			p.Wrapper = new ClientWrapper();
-			p.UUID = Guid.NewGuid().ToString();
-			p.PlayerEntity = player;
-			p.Coordinates = new Vector3(player.KnownPosition.X, player.KnownPosition.Y, player.KnownPosition.Z);
-			p.Yaw = player.KnownPosition.Yaw;
-			p.Pitch = player.KnownPosition.Pitch;
+			var p = new Classes.Player
+			{
+				Username = player.Username,
+				EntityId = PluginGlobals.PeidOffset + player.EntityId,
+				Wrapper = new ClientWrapper(),
+				Uuid = Guid.NewGuid().ToString(),
+				PlayerEntity = player,
+				Coordinates = new Vector3(player.KnownPosition.X, player.KnownPosition.Y, player.KnownPosition.Z),
+				Yaw = player.KnownPosition.Yaw,
+				Pitch = player.KnownPosition.Pitch
+			};
 
-			PluginGlobals.pePlayers.Add(p);
+			PluginGlobals.PePlayers.Add(p);
 		
 				//PluginGlobals.Level.SendAddForPlayer(targetPlayer, this);
 				//PluginGlobals.Level.SendAddForPlayer(newPlayer, targetPlayer);
 
-				foreach (var pc in PluginGlobals.pcPlayers) //Send PC players to PE
+				foreach (var pc in PluginGlobals.PcPlayers) //Send PC players to PE
 				{
 					player.SendPackage(new McpeAddPlayer
 					{
 						clientId = 0,
 						username = pc.Username,
-						entityId = PluginGlobals.PCIDOffset + pc.UniqueServerID,
+						entityId = PluginGlobals.PcidOffset + pc.EntityId,
 						x = (float) pc.Coordinates.X,
 						y = (float) pc.Coordinates.Y,
 						z = (float) pc.Coordinates.Z,
@@ -101,21 +103,21 @@ namespace MiNETPC
 					player.SendPackage(new McpeAddEntity
 					{
 						entityType = -1,
-						entityId = PluginGlobals.PCIDOffset + pc.UniqueServerID,
+						entityId = PluginGlobals.PcidOffset + pc.EntityId,
 						x = (float) pc.Coordinates.X,
 						y = (float)pc.Coordinates.Y,
 						z = (float)pc.Coordinates.Z,
 					});
 				}
 
-				foreach (var playerd in PluginGlobals.pcPlayers) //Send PE Players to PC
+				foreach (var playerd in PluginGlobals.PcPlayers) //Send PE Players to PC
 				{
 					new PlayerListItem(playerd.Wrapper)
 					{
 						Action = 0,
 						Username = p.Username,
 						Gamemode = GameMode.Creative,
-						UUID = p.UUID
+						UUID = p.Uuid
 					}.Write();
 
 					new SpawnPlayer(playerd.Wrapper)
