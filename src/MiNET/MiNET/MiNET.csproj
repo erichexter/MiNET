@@ -122,6 +122,7 @@
     <Compile Include="PluginSystem\Attributes\HandlePlayerDisconnectAttribute.cs" />
     <Compile Include="PluginSystem\Attributes\HandleSendPacketAttribute.cs" />
     <Compile Include="PluginSystem\Attributes\HandlePlayerLoginAttribute.cs" />
+    <Compile Include="PluginSystem\Attributes\OnPlayerInteract.cs" />
     <Compile Include="PluginSystem\Attributes\PluginAttribute.cs" />
     <Compile Include="PluginSystem\IMiNETPlugin.cs" />
     <Compile Include="Blocks\Block.cs" />

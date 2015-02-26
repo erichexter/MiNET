@@ -44,12 +44,25 @@ namespace MiNETPC.Classes
 
 		public MiNET.Player PlayerEntity;
 		public PlayerInventory PlayerInventory;
+		public PCHealthManager HealthManager;
 
 		public Player()
 		{
 			_chunksUsed = new Dictionary<Tuple<int, int>, ChunkColumn>();
+			HealthManager = new PCHealthManager(this);
 			if (PlayerEntity == null) PlayerEntity = new MiNET.Player(null, null, PluginGlobals.Level, -1);
 			PlayerInventory = new PlayerInventory(this);
+		}
+
+		public void Respawn()
+		{
+			HealthManager.ResetHealth();
+			new Respawn(Wrapper) {}.Write();
+		}
+
+		public void SendHealth()
+		{
+			if (Wrapper != null) new UpdateHealth(Wrapper).Write();
 		}
 
 		public void SendChunksForKnownPosition(bool force = false)

@@ -16,6 +16,7 @@ namespace MiNETPC
 			PluginGlobals.Level = level;
 			ConsoleFunctions.WriteInfoLine("[MiNET PC] Initiating server...");
 			new Thread(() => new Networking.BasicListener().ListenForClients()).Start();
+			new Ticks().StartTimeOfDayTimer();
 		}
 
 		public override void OnDisable()

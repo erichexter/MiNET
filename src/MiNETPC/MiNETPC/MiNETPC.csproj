@@ -30,8 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MiNET">
-      <HintPath>..\..\..\..\GitHub\MiNET\src\MiNET\MiNET.Service\bin\Debug\MiNET.dll</HintPath>
+    <Reference Include="MiNET, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\MiNET\MiNET.Service\bin\Debug\MiNET.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,41 +44,46 @@
     <Compile Include="Classes\PCChunkColumn.cs" />
     <Compile Include="Classes\Player.cs" />
     <Compile Include="CustomInventory.cs" />
-    <Compile Include="Packages\Animation.cs" />
-    <Compile Include="Packages\CreativeInventoryAction.cs" />
-    <Compile Include="Packages\EntityEquipment.cs" />
-    <Compile Include="Packages\EntityRelativeMove.cs" />
-    <Compile Include="Packages\HeldItemChange.cs" />
-    <Compile Include="Packages\SpawnPlayer.cs" />
+    <Compile Include="Packets\Animation.cs" />
+    <Compile Include="Packets\ClientStatus.cs" />
+    <Compile Include="Packets\CreativeInventoryAction.cs" />
+    <Compile Include="Packets\EntityEquipment.cs" />
+    <Compile Include="Packets\EntityRelativeMove.cs" />
+    <Compile Include="Packets\HeldItemChange.cs" />
+    <Compile Include="Packets\Respawn.cs" />
+    <Compile Include="Packets\SpawnPlayer.cs" />
     <Compile Include="Classes\Vector2.cs" />
     <Compile Include="ConsoleFunctions.cs" />
     <Compile Include="Networking\BasicListener.cs" />
-    <Compile Include="Packages\BlockChange.cs" />
-    <Compile Include="Packages\ChatMessage.cs" />
-    <Compile Include="Packages\ChunkData.cs" />
-    <Compile Include="Packages\Disconnect.cs" />
-    <Compile Include="Packages\EntityTeleport.cs" />
-    <Compile Include="Packages\Handshake.cs" />
-    <Compile Include="Packages\JoinGame.cs" />
-    <Compile Include="Packages\KeepAlive.cs" />
-    <Compile Include="Packages\LoginSucces.cs" />
-    <Compile Include="Packages\OnGround.cs" />
-    <Compile Include="Packages\Package.cs" />
-    <Compile Include="Packages\PackageFactory.cs" />
-    <Compile Include="Packages\Ping.cs" />
-    <Compile Include="Packages\PlayerBlockPlacement.cs" />
-    <Compile Include="Packages\PlayerDigging.cs" />
-    <Compile Include="Packages\PlayerListItem.cs" />
-    <Compile Include="Packages\PlayerLook.cs" />
-    <Compile Include="Packages\PlayerPosition.cs" />
-    <Compile Include="Packages\PlayerPositionAndLook.cs" />
-    <Compile Include="Packages\SetCompression.cs" />
-    <Compile Include="Packages\SpawnPosition.cs" />
-    <Compile Include="Packages\TimeUpdate.cs" />
-    <Compile Include="Packages\UseEntity.cs" />
+    <Compile Include="Packets\BlockChange.cs" />
+    <Compile Include="Packets\ChatMessage.cs" />
+    <Compile Include="Packets\ChunkData.cs" />
+    <Compile Include="Packets\Disconnect.cs" />
+    <Compile Include="Packets\EntityTeleport.cs" />
+    <Compile Include="Packets\Handshake.cs" />
+    <Compile Include="Packets\JoinGame.cs" />
+    <Compile Include="Packets\KeepAlive.cs" />
+    <Compile Include="Packets\LoginSucces.cs" />
+    <Compile Include="Packets\OnGround.cs" />
+    <Compile Include="Packets\Package.cs" />
+    <Compile Include="Packets\PackageFactory.cs" />
+    <Compile Include="Packets\Ping.cs" />
+    <Compile Include="Packets\PlayerBlockPlacement.cs" />
+    <Compile Include="Packets\PlayerDigging.cs" />
+    <Compile Include="Packets\PlayerListItem.cs" />
+    <Compile Include="Packets\PlayerLook.cs" />
+    <Compile Include="Packets\PlayerPosition.cs" />
+    <Compile Include="Packets\PlayerPositionAndLook.cs" />
+    <Compile Include="Packets\SetCompression.cs" />
+    <Compile Include="Packets\SpawnPosition.cs" />
+    <Compile Include="Packets\TimeUpdate.cs" />
+    <Compile Include="Packets\UpdateHealth.cs" />
+    <Compile Include="Packets\UseEntity.cs" />
+    <Compile Include="PCHealthManager.cs" />
     <Compile Include="PEPacketReader.cs" />
     <Compile Include="PluginGlobals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ticks.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

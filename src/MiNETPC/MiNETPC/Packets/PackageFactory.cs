@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MiNETPC.Classes;
+using MiNETPC.Packets;
 
 namespace MiNETPC.Packages
 {
@@ -27,13 +28,13 @@ namespace MiNETPC.Packages
 			PlayPackages.Add(new PlayerPositionAndLook(client, buffer));
 			PlayPackages.Add(new PlayerPosition(client, buffer));
 			PlayPackages.Add(new PlayerLook(client, buffer));
-			//PlayPackages.Add(new Animation(client, buffer));
 			PlayPackages.Add(new PlayerBlockPlacement(client, buffer));
 			PlayPackages.Add(new PlayerDigging(client, buffer));
 			PlayPackages.Add(new HeldItemChange(client, buffer));
 			PlayPackages.Add(new UseEntity(client, buffer));
 			PlayPackages.Add(new CreativeInventoryAction(client, buffer));
 			PlayPackages.Add(new Animation(client, buffer));
+			PlayPackages.Add(new ClientStatus(client, buffer));
 
 			#endregion
 

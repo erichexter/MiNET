@@ -748,6 +748,7 @@ namespace MiNET
 		/// <param name="message">The message.</param>
 		private void HandleInteract(McpeInteract message)
 		{
+			new Task(() => HandlePlayerInteractPlugin(message.targetEntityId)).Start();
 			Player target = Level.EntityManager.GetEntity(message.targetEntityId) as Player;
 
 			if (target == null) return;
@@ -755,6 +756,35 @@ namespace MiNET
 			target.HealthManager.TakeHit(this, ItemFactory.GetItem(this.Inventory.ItemInHand.Value.Id).GetDamage(), DamageCause.EntityAttack);
 
 			target.BroadcastEntityEvent();
+		}
+
+		private void HandlePlayerInteractPlugin(int entityId)
+		{
+			try
+			{
+				foreach (var handler in PluginLoader.OnEntityDamageDictionary)
+				{
+					OnPlayerInteractAttribute atrib = (OnPlayerInteractAttribute)handler.Key;
+					if (atrib == null) continue;
+					var method = handler.Value;
+					if (method == null) return;
+					if (method.IsStatic)
+					{
+						new Task(() => method.Invoke(null, new object[] { entityId })).Start();
+					}
+					else
+					{
+						object obj = Activator.CreateInstance(method.DeclaringType);
+						new Task(() => method.Invoke(obj, new object[] { entityId })).Start();
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				//For now we will just ignore this, not to big of a deal.
+				//Will have to think a bit more about this later on.
+				Log.Warn("Plugin Error: " + ex);
+			}
 		}
 
 		/// <summary>

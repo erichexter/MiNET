@@ -17,7 +17,9 @@ namespace MiNET.PluginSystem
 		public static Dictionary<Attribute, MethodInfo> PacketHandlerDictionary = new Dictionary<Attribute, MethodInfo>();
 		public static Dictionary<Attribute, MethodInfo> PacketSendHandlerDictionary = new Dictionary<Attribute, MethodInfo>();
 		public static Dictionary<Attribute, MethodInfo> PlayerLoginDictionary = new Dictionary<Attribute, MethodInfo>();
-		public static Dictionary<Attribute, MethodInfo> PlayerDisconnectDictionary = new Dictionary<Attribute, MethodInfo>(); 
+		public static Dictionary<Attribute, MethodInfo> PlayerDisconnectDictionary = new Dictionary<Attribute, MethodInfo>();
+		public static Dictionary<Attribute, MethodInfo> OnEntityDamageDictionary = new Dictionary<Attribute, MethodInfo>(); 
+
 		public void LoadPlugins()
 		{
 				if (!Directory.Exists("Plugins"))
@@ -36,6 +38,7 @@ namespace MiNET.PluginSystem
 							new Task(() => GetPacketEvents(type)).Start();
 							new Task(() => GetPlayerLoginHandlers(type)).Start();
 							new Task(() => GetPlayerDisconnectHandlers(type)).Start();
+							new Task(() => GetOnEntityDamageHandlers(type)).Start();
 
 							if (!type.IsDefined(typeof (PluginAttribute), true)) continue;
 							var ctor = type.GetConstructor(new Type[] {});
@@ -51,6 +54,19 @@ namespace MiNET.PluginSystem
 						}
 					}
 				}
+		}
+
+		private void GetOnEntityDamageHandlers(Type type)
+		{
+			var methods = type.GetMethods();
+			foreach (MethodInfo method in methods)
+			{
+				var cmd = Attribute.GetCustomAttribute(method,
+					typeof(OnPlayerInteractAttribute), false) as OnPlayerInteractAttribute;
+				if (cmd == null)
+					continue;
+				OnEntityDamageDictionary.Add(cmd, method);
+			}
 		}
 
 

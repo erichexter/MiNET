@@ -148,17 +148,15 @@ namespace MiNETPC
 			PluginGlobals.BroadcastChat("\\u00A7e" + player.Username + " joined the game!");
 		}
 
-	/*	[HandlePacket(typeof(McpePlayerEquipment))]
-		public void HandleChangeItem(Package packet, Player source)
+		[OnPlayerInteract]
+		public void PlayerAttacked(int entityId)
 		{
-			McpePlayerEquipment data = (McpePlayerEquipment) packet;
-			var itemid = data.item;
-			var metadata = data.meta;
-
-			foreach (var player in PluginGlobals.pcPlayers)
+			if (entityId >= PluginGlobals.PcidOffset)
 			{
-				new EntityEquipment(player.Wrapper) {ItemID = (short)(itemid << 4 | metadata), ItemCount = 1, EntityID = PluginGlobals.PEIDOffset + source.EntityId, Slot = 0}.Write();
+				entityId -= PluginGlobals.PcidOffset;
+				var target = PluginGlobals.GetPlayer(entityId);
+				target.HealthManager.TakeHit(null);
 			}
-		}*/
+		}
 	}
 }
