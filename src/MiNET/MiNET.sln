@@ -41,8 +41,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BC1E3C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPlugin", "TestPlugin\TestPlugin.csproj", "{F53DE0D1-333F-42BC-B803-E523CFF0113E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiNETPC", "..\MiNETPC\MiNETPC\MiNETPC.csproj", "{3D012485-ED3D-42C3-867D-45DCE057ADE7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -165,16 +163,6 @@ Global
 		{F53DE0D1-333F-42BC-B803-E523CFF0113E}.Release|ARM.ActiveCfg = Release|Any CPU
 		{F53DE0D1-333F-42BC-B803-E523CFF0113E}.Release|x64.ActiveCfg = Release|Any CPU
 		{F53DE0D1-333F-42BC-B803-E523CFF0113E}.Release|x86.ActiveCfg = Release|Any CPU
-		{3D012485-ED3D-42C3-867D-45DCE057ADE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D012485-ED3D-42C3-867D-45DCE057ADE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D012485-ED3D-42C3-867D-45DCE057ADE7}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{3D012485-ED3D-42C3-867D-45DCE057ADE7}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3D012485-ED3D-42C3-867D-45DCE057ADE7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3D012485-ED3D-42C3-867D-45DCE057ADE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D012485-ED3D-42C3-867D-45DCE057ADE7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D012485-ED3D-42C3-867D-45DCE057ADE7}.Release|ARM.ActiveCfg = Release|Any CPU
-		{3D012485-ED3D-42C3-867D-45DCE057ADE7}.Release|x64.ActiveCfg = Release|Any CPU
-		{3D012485-ED3D-42C3-867D-45DCE057ADE7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
