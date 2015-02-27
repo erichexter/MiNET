@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +10,6 @@ using MiNET.Entities;
 using MiNET.Items;
 using MiNET.Net;
 using MiNET.PluginSystem;
-using MiNET.PluginSystem.Attributes;
 using MiNET.Utils;
 using MiNET.Worlds;
 
@@ -359,34 +356,7 @@ namespace MiNET
 			IsConnected = false;
 			IsSpawned = true;
 			Level.RemovePlayer(this);
-			PluginPlayerDisconnectHandler();
-		}
-
-		private void PluginPlayerDisconnectHandler()
-		{
-			try
-			{
-				Player target = this;
-				foreach (var method in from handler in PluginLoader.PlayerDisconnectDictionary let atrib = (HandlePlayerDisconnectAttribute)handler.Key where atrib != null select handler.Value)
-				{
-					if (method == null) return;
-					if (method.IsStatic)
-					{
-						new Task(() => method.Invoke(null, new object[] { target })).Start();
-					}
-					else
-					{
-						object obj = Activator.CreateInstance(method.DeclaringType);
-						new Task(() => method.Invoke(obj, new object[] { target })).Start();
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				//For now we will just ignore this, not to big of a deal.
-				//Will have to think a bit more about this later on.
-				Log.Warn("Plugin Error: " + ex);
-			}
+			new Task(() => PluginHandlers.PlayerDisconnectHandler(this)).Start();
 		}
 
 		/// <summary>
@@ -450,34 +420,7 @@ namespace MiNET
 			SendChunksForKnownPosition();
 			LastUpdatedTime = DateTime.UtcNow;
 
-			new Task(PluginPlayerLoginHandler).Start();
-		}
-
-		private void PluginPlayerLoginHandler()
-		{
-			try
-			{
-				Player target = this;
-				foreach (var method in from handler in PluginLoader.PlayerLoginDictionary let atrib = (HandlePlayerLoginAttribute)handler.Key where atrib != null select handler.Value)
-				{
-					if (method == null) return;
-					if (method.IsStatic)
-					{
-						new Task(() => method.Invoke(null, new object[] { target })).Start();
-					}
-					else
-					{
-						object obj = Activator.CreateInstance(method.DeclaringType);
-						new Task(() => method.Invoke(obj, new object[] { target })).Start();
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				//For now we will just ignore this, not to big of a deal.
-				//Will have to think a bit more about this later on.
-				Log.Warn("Plugin Error: " + ex);
-			}
+			new Task(() => PluginHandlers.PlayerLoginHandler(this)).Start();
 		}
 
 		/// <summary>
@@ -743,7 +686,7 @@ namespace MiNET
 		/// <param name="message">The message.</param>
 		private void HandleInteract(McpeInteract message)
 		{
-			new Task(() => HandlePlayerInteractPlugin(message.targetEntityId)).Start();
+			new Task(() => PluginHandlers.HandlePlayerInteractPlugin(message.targetEntityId)).Start();
 			Player target = Level.EntityManager.GetEntity(message.targetEntityId) as Player;
 
 			if (target == null) return;
@@ -751,32 +694,6 @@ namespace MiNET
 			target.HealthManager.TakeHit(this, ItemFactory.GetItem(this.Inventory.ItemInHand.Value.Id).GetDamage(), DamageCause.EntityAttack);
 
 			target.BroadcastEntityEvent();
-		}
-
-		private void HandlePlayerInteractPlugin(int entityId)
-		{
-			try
-			{
-				foreach (var method in from handler in PluginLoader.OnEntityDamageDictionary let atrib = (OnPlayerInteractAttribute)handler.Key where atrib != null select handler.Value)
-				{
-					if (method == null) return;
-					if (method.IsStatic)
-					{
-						new Task(() => method.Invoke(null, new object[] { entityId })).Start();
-					}
-					else
-					{
-						object obj = Activator.CreateInstance(method.DeclaringType);
-						new Task(() => method.Invoke(obj, new object[] { entityId })).Start();
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				//For now we will just ignore this, not to big of a deal.
-				//Will have to think a bit more about this later on.
-				Log.Warn("Plugin Error: " + ex);
-			}
 		}
 
 		/// <summary>

@@ -406,43 +406,7 @@ namespace MiNET
 
 			if (!_performanceTest)
 			{
-				new Task(() => PluginPacketHandler(message, senderEndpoint)).Start();
-			}
-		}
-
-		private void PluginPacketHandler(Package message, IPEndPoint senderEndPoint)
-		{
-			try
-			{
-				Player target = _level.GetPlayer(senderEndPoint);
-				if (target != null)
-				{
-					foreach (var handler in PluginLoader.PacketHandlerDictionary)
-					{
-						HandlePacketAttribute atrib = (HandlePacketAttribute) handler.Key;
-						if (atrib.Packet == null) continue;
-						if (atrib.Packet == message.GetType())
-						{
-							var method = handler.Value;
-							if (method == null) return;
-							if (method.IsStatic)
-							{
-								new Task(() => method.Invoke(null, new object[] {message, target})).Start();
-							}
-							else
-							{
-								object obj = Activator.CreateInstance(method.DeclaringType);
-								new Task(() => method.Invoke(obj, new object[] {message, target})).Start();
-							}
-						}
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				//For now we will just ignore this, not to big of a deal.
-				//Will have to think a bit more about this later on.
-				Log.Warn("Plugin Error: " + ex);
+				new Task(() => PluginHandlers.PluginPacketHandler(message, senderEndpoint, _level)).Start();
 			}
 		}
 
@@ -516,47 +480,11 @@ namespace MiNET
 				if (!_performanceTest)
 				{
 					Package message1 = message;
-					new Task(() => PluginSendPacketHandler(message1, senderEndpoint)).Start();
+					new Task(() => PluginHandlers.PluginSendPacketHandler(message1, senderEndpoint, _level)).Start();
 				}
 
 				TraceSend(message);
 				message.PutPool();
-			}
-		}
-
-		private void PluginSendPacketHandler(Package message, IPEndPoint receiveEndPoint)
-		{
-			try
-			{
-				Player target = _level.GetPlayer(receiveEndPoint);
-				if (target != null)
-				{
-					foreach (var handler in PluginLoader.PacketSendHandlerDictionary)
-					{
-						HandleSendPacketAttribute atrib = (HandleSendPacketAttribute) handler.Key;
-						if (atrib.Packet == null) continue;
-						if (atrib.Packet == message.GetType())
-						{
-							var method = handler.Value;
-							if (method == null) return;
-							if (method.IsStatic)
-							{
-								new Task(() => method.Invoke(null, new object[] {message, target})).Start();
-							}
-							else
-							{
-								object obj = Activator.CreateInstance(method.DeclaringType);
-								new Task(() => method.Invoke(obj, new object[] {message, target})).Start();
-							}
-						}
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				//For now we will just ignore this, not to big of a deal.
-				//Will have to think a bit more about this later on.
-				Log.Warn("Plugin Error: " + ex);
 			}
 		}
 
