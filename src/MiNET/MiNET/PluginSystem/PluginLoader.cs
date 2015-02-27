@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using log4net;
@@ -26,32 +27,27 @@ namespace MiNET.PluginSystem
 					Directory.CreateDirectory("Plugins");
 
 				string pluginsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Plugins");
-				foreach (string pluginPath in Directory.GetFiles(pluginsFolder, "*.dll", SearchOption.TopDirectoryOnly))
+				foreach (Type type in Directory.GetFiles(pluginsFolder, "*.dll", SearchOption.TopDirectoryOnly).Select(pluginPath => Assembly.LoadFile(pluginPath)).Select(newAssembly => newAssembly.GetExportedTypes()).SelectMany(types => types))
 				{
-					Assembly newAssembly = Assembly.LoadFile(pluginPath);
-					Type[] types = newAssembly.GetExportedTypes();
-					foreach (Type type in types)
+					try
 					{
-						try
-						{
-							new Task(() => GetCommandHandlers(type)).Start();
-							new Task(() => GetPacketEvents(type)).Start();
-							new Task(() => GetPlayerLoginHandlers(type)).Start();
-							new Task(() => GetPlayerDisconnectHandlers(type)).Start();
-							new Task(() => GetOnEntityDamageHandlers(type)).Start();
+						new Task(() => GetCommandHandlers(type)).Start();
+						new Task(() => GetPacketEvents(type)).Start();
+						new Task(() => GetPlayerLoginHandlers(type)).Start();
+						new Task(() => GetPlayerDisconnectHandlers(type)).Start();
+						new Task(() => GetOnEntityDamageHandlers(type)).Start();
 
-							if (!type.IsDefined(typeof (PluginAttribute), true)) continue;
-							var ctor = type.GetConstructor(new Type[] {});
-							if (ctor != null)
-							{
-								var plugin = ctor.Invoke(new object[] {}) as IMiNETPlugin;
-								Plugins.Add(plugin);
-							}
-						}
-						catch (Exception ex)
+						if (!type.IsDefined(typeof (PluginAttribute), true)) continue;
+						var ctor = type.GetConstructor(new Type[] {});
+						if (ctor != null)
 						{
-							Log.Warn("Plugin Error: " + ex);
+							var plugin = ctor.Invoke(new object[] {}) as IMiNETPlugin;
+							Plugins.Add(plugin);
 						}
+					}
+					catch (Exception ex)
+					{
+						Log.Warn("Plugin Error: " + ex);
 					}
 				}
 		}

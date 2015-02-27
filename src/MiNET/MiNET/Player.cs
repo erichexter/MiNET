@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -366,11 +367,8 @@ namespace MiNET
 			try
 			{
 				Player target = this;
-				foreach (var handler in PluginLoader.PlayerDisconnectDictionary)
+				foreach (var method in from handler in PluginLoader.PlayerDisconnectDictionary let atrib = (HandlePlayerDisconnectAttribute)handler.Key where atrib != null select handler.Value)
 				{
-					HandlePlayerDisconnectAttribute atrib = (HandlePlayerDisconnectAttribute)handler.Key;
-					if (atrib == null) continue;
-					var method = handler.Value;
 					if (method == null) return;
 					if (method.IsStatic)
 					{
@@ -460,11 +458,8 @@ namespace MiNET
 			try
 			{
 				Player target = this;
-				foreach (var handler in PluginLoader.PlayerLoginDictionary)
+				foreach (var method in from handler in PluginLoader.PlayerLoginDictionary let atrib = (HandlePlayerLoginAttribute)handler.Key where atrib != null select handler.Value)
 				{
-					HandlePlayerLoginAttribute atrib = (HandlePlayerLoginAttribute)handler.Key;
-					if (atrib == null) continue;
-					var method = handler.Value;
 					if (method == null) return;
 					if (method.IsStatic)
 					{
@@ -762,11 +757,8 @@ namespace MiNET
 		{
 			try
 			{
-				foreach (var handler in PluginLoader.OnEntityDamageDictionary)
+				foreach (var method in from handler in PluginLoader.OnEntityDamageDictionary let atrib = (OnPlayerInteractAttribute)handler.Key where atrib != null select handler.Value)
 				{
-					OnPlayerInteractAttribute atrib = (OnPlayerInteractAttribute)handler.Key;
-					if (atrib == null) continue;
-					var method = handler.Value;
 					if (method == null) return;
 					if (method.IsStatic)
 					{

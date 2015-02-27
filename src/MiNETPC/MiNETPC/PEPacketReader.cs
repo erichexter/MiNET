@@ -57,13 +57,23 @@ namespace MiNETPC
 		public void HandleMovePacket(Package packet, Player source)
 		{
 			McpeMovePlayer data = (McpeMovePlayer) packet;
-			PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Coordinates = new Vector3(data.x, data.y, data.z);
-			PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Yaw = data.bodyYaw;
-			PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Pitch = data.pitch;
-
-			foreach (var player in PluginGlobals.PcPlayers)
+			if (PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId) != null)
 			{
-				new EntityTeleport(player.Wrapper, new MsgBuffer(player.Wrapper)) {Coordinates = new Vector3(data.x, data.y, data.z), OnGround = false, Yaw = (byte)data.bodyYaw, Pitch = (byte)data.pitch, EntityId = PluginGlobals.PeidOffset + data.entityId}.Write();
+				PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Coordinates = new Vector3(data.x, data.y, data.z);
+				PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Yaw = data.bodyYaw;
+				PluginGlobals.GetPlayer(PluginGlobals.PeidOffset + data.entityId).Pitch = data.pitch;
+
+				foreach (var player in PluginGlobals.PcPlayers)
+				{
+					new EntityTeleport(player.Wrapper, new MsgBuffer(player.Wrapper))
+					{
+						Coordinates = new Vector3(data.x, data.y, data.z),
+						OnGround = false,
+						Yaw = (byte) data.bodyYaw,
+						Pitch = (byte) data.pitch,
+						EntityId = PluginGlobals.PeidOffset + data.entityId
+					}.Write();
+				}
 			}
 		}
 

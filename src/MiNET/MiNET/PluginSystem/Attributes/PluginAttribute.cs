@@ -13,7 +13,7 @@ namespace MiNET.PluginSystem.Attributes
 			PluginVersion = pluginversion;
 			Author = author;
 
-			if (!Directory.Exists(PluginName)) Directory.CreateDirectory(PluginName);
+			//if (!Directory.Exists(PluginName)) Directory.CreateDirectory(PluginName);
 		}
 
 		public string PluginName;
