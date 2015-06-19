@@ -777,7 +777,7 @@ namespace MiNET.Client
 		public static void Connect()
 		{
 			//var client = new MiNetRealClient(new IPEndPoint(IPAddress.Loopback, 19132));
-			var client = new MiNetClient(new IPEndPoint(IPAddress.Parse("192.168.0.2"), 19132));
+			var client = new MiNetClient(new IPEndPoint(IPAddress.Parse("192.168.2.107"), 19132));
 
 			client.StartServer();
 			Console.WriteLine("Server started.");

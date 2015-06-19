@@ -11,7 +11,7 @@ namespace MiNET.Client
 	public class ClientUtils
 	{
 		private static int _waterOffsetY = 0;
-		private static string _basePath = @"D:\Temp\MCPEWorldStore";
+		private static string _basePath = @"c:\Temp";
 
 		public static ChunkColumn DecocedChunkColumn(byte[] buffer)
 		{
