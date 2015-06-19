@@ -123,6 +123,7 @@
     <Compile Include="CommandHandler\GiveCommand.cs" />
     <Compile Include="CommandHandler\HelpCommand.cs" />
     <Compile Include="Blocks\Tnt.cs" />
+    <Compile Include="Entities\Boat.cs" />
     <Compile Include="Entities\Arrow.cs" />
     <Compile Include="Entities\Egg.cs" />
     <Compile Include="Entities\Entity.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Entities\Throwable.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="InventoryManager.cs" />
+    <Compile Include="Items\ItemBoat.cs" />
     <Compile Include="Items\ItemBed.cs" />
     <Compile Include="Items\ItemBow.cs" />
     <Compile Include="Items\ItemChest.cs" />

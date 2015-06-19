@@ -779,14 +779,23 @@ namespace MiNET
 		/// <param name="message">The message.</param>
 		private void HandleInteract(McpeInteract message)
 		{
-			Player target = Level.EntityManager.GetEntity(message.targetEntityId) as Player;
+			
 
 			Log.DebugFormat("Interact Action ID: {0}", message.actionId);
 			Log.DebugFormat("Interact Target Entity ID: {0}", message.targetEntityId);
 
-			if (target == null) return;
+		    var entity = Level.EntityManager.GetEntity(message.targetEntityId);
+		    Player target = entity as Player;
+		    if (target != null)
+		    {
+		        target.HealthManager.TakeHit(this, CalculateDamage(target), DamageCause.EntityAttack);
+		        return;
+		    }
+		    if (entity as Boat != null)
+		    {
+		        Log.Debug("This is a boat interaction ");                
+		    }
 
-			target.HealthManager.TakeHit(this, CalculateDamage(target), DamageCause.EntityAttack);
 		}
 
 		private int CalculateDamage(Player target)

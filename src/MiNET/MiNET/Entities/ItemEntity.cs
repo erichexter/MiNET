@@ -15,13 +15,14 @@ namespace MiNET.Entities
 		public ItemEntity(Level level, Item item) : base(64, level)
 		{
 			Item = item;
+            
+            //Height = 0.25;
+            //Width = 0.25;
+            //Length = 0.25;
 
-			Height = 0.25;
-			Width = 0.25;
-			Length = 0.25;
-
-			PickupDelay = 10;
-			TimeToLive = 20*10;
+            //PickupDelay = 10;
+            TimeToLive = 20*10;
+		    Gravity = 0;
 		}
 
 		public MetadataSlot GetMetadataSlot()
